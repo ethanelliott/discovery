@@ -1,0 +1,28 @@
+{
+  "name": "discovery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "node ./server/app.js",
+    "service": "node ./service/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethanelliott/discovery.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ethanelliott/discovery/issues"
+  },
+  "homepage": "https://github.com/ethanelliott/discovery#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "diskdb": "^0.1.17",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "latest"
+  }
+}
