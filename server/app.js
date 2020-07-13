@@ -64,7 +64,6 @@ const ROUTES = [
         bodyParams: [],
         action: async (req, res) => {
             const info = req.body;
-            console.log(info);
             const {data} = await axios.get(`${info.address}/test`);
             db.SERVICES.save(info);
             info.matcher.forEach(match => {
@@ -91,7 +90,6 @@ http.listen(PORT, '0.0.0.0', () => {
 });
 
 io.on('connection', (socket) => {
-    socket.emit('register', {socketId: socket.id, remoteAddress: socket.request.connection.remoteAddress});
     socket.on('disconnect', (reason) => {
         console.log('service disconnected', socket.id, reason);
         const service = db.SERVICES.findOne({socketId: socket.id});
@@ -100,6 +98,7 @@ io.on('connection', (socket) => {
             TYPES[e].matches = TYPES[e].matches.filter(m => m.id !== service._id)
         })
     });
+    socket.emit('register', {socketId: socket.id, remoteAddress: socket.request.connection.remoteAddress});
 });
 
 process.on('SIGINT', function () {
