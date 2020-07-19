@@ -89,7 +89,11 @@ http.listen(PORT, '0.0.0.0', () => {
     console.log(`Discovery Service Listening on ${PORT}`);
 });
 
+const clients = [];
+
 io.on('connection', (socket) => {
+    // load socket into client array
+    clients.push(socket);
     socket.on('disconnect', (reason) => {
         console.log('service disconnected', socket.id, reason);
         const service = db.SERVICES.findOne({socketId: socket.id});
@@ -103,5 +107,8 @@ io.on('connection', (socket) => {
 
 process.on('SIGINT', function () {
     console.log("Shutting down server...");
+    clients.forEach(socket => {
+        socket.disconnect();
+    })
     TABLES.forEach(e => db[e].remove());
 });

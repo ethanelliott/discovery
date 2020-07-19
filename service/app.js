@@ -1,7 +1,7 @@
 const DISCOVERY_ADDRESS = 'http://localhost:8888';
 const app = require('express')();
 const http = require('http').createServer(app);
-const socket = require('socket.io-client')(DISCOVERY_ADDRESS);
+const io = require('socket.io-client');
 const axios = require('axios');
 const getPort = require('get-port');
 
@@ -34,6 +34,7 @@ const ROUTES = [
 
 const main = async () => {
     const PORT = await getPort();
+
     ROUTES.push({
         route: '/test',
         method: 'get',
@@ -45,6 +46,13 @@ const main = async () => {
 
     ROUTES.forEach(e => app[e.method](e.route, e.action));
 
+    const socket = io(DISCOVERY_ADDRESS);
+    // socket.on('connection', () => {
+    //     console.log('connected');
+    // });
+    // socket.on('disconnect', () => {
+    //     console.log('disconnect');
+    // });
     socket.on('register', async ({socketId, remoteAddress}) => {
         await axios.post(`${DISCOVERY_ADDRESS}/register`, {
             ...METADATA,
